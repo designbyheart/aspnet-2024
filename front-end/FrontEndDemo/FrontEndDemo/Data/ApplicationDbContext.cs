@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MySQLDemo.Models;
+using FrontEndDemo.Models;
 
-namespace MySQLDemo.Data
+namespace FrontEndDemo.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -9,11 +9,20 @@ namespace MySQLDemo.Data
         {
         }
 
-        public DbSet<User> Users { get; set; } = null!;
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection;TrustServerCertificate=true;");
+        //    }
+        //}
+
+
+        //public DbSet<User> Users { get; set; } = null!;
+        //public DbSet<Product> Products { get; set; }
+        //public DbSet<Category> Categories { get; set; }
+        //public DbSet<Order> Orders { get; set; }
+        //public DbSet<OrderItem> OrderItems { get; set; }
 
     }
 }

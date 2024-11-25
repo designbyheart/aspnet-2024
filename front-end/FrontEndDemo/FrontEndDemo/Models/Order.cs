@@ -1,32 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
-namespace MySQLDemo.Models
+namespace FrontEndDemo.Models;
+
+public partial class Order
 {
+    public int Id { get; set; }
 
-    public class Order
-    {
-        [Key]
-        public int Id { get; set; } // Primary Key
+    public DateTime OrderDate { get; set; }
 
-        [Required]
-        public DateTime OrderDate { get; set; } = DateTime.UtcNow; // Date the order was placed
+    public string CustomerName { get; set; } = null!;
 
-        [Required]
-        public string CustomerName { get; set; } // Name of the customer who placed the order
+    public string CustomerEmail { get; set; } = null!;
 
-        [Required]
-        [StringLength(200)]
-        public string CustomerEmail { get; set; } // Email of the customer
+    public string ShippingAddress { get; set; } = null!;
 
-        [Required]
-        public string ShippingAddress { get; set; } // Address where the order should be delivered
+    public decimal TotalAmount { get; set; }
 
-        [Required]
-        public decimal TotalAmount { get; set; } // Total cost of the order
+    public DateTime? DeliveredAt { get; set; }
 
-        public DateTime? DeliveredAt { get; set; } // Date the order was delivered (nullable)
-
-        // Navigation property to link with OrderItems
-        public ICollection<OrderItem> OrderItems { get; set; } // Items in this order
-    }
+    public virtual ICollection<Orderitem> Orderitems { get; set; } = new List<Orderitem>();
 }

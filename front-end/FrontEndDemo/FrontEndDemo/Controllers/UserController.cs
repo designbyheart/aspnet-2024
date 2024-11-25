@@ -1,14 +1,37 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FrontEndDemo.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace FrontEndDemo.Controllers
 {
     public class UserController : Controller
     {
-        // GET: UserController
-        public ActionResult Index()
+        private readonly HttpClient _httpClient;
+        public UserController()
         {
-            return View();
+            _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5134/") };
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/User");
+                if (response.IsSuccessStatusCode)
+                {
+                    IEnumerable<User>? usersList = await response.Content.ReadFromJsonAsync<IEnumerable<User>>();
+                    return View(usersList ?? []);
+                }
+
+                ModelState.AddModelError(string.Empty, "Failed to retrieve user details.");
+                IEnumerable<User> users = [];
+                return View(users);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // GET: UserController/Details/5
@@ -20,22 +43,31 @@ namespace FrontEndDemo.Controllers
         // GET: UserController/Create
         public ActionResult Create()
         {
-            return View();
+            User user = new User();
+            return View(user);
         }
 
-        // POST: UserController/Create
+
+
+        // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,Password,Phone,BirthDate")] User user)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                return View(user);
             }
-            catch
+
+            var response = await _httpClient.PostAsJsonAsync("api/user", user);
+
+            if (response.IsSuccessStatusCode)
             {
-                return View();
+                return RedirectToAction("Details", new { id = user.Id });
             }
+
+            ModelState.AddModelError(string.Empty, "Failed to create user.");
+            return View(user);
         }
 
         // GET: UserController/Edit/5

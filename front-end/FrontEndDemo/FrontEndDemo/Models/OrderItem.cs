@@ -1,29 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
-namespace MySQLDemo.Models
+namespace FrontEndDemo.Models;
+
+public partial class Orderitem
 {
-    public class OrderItem
-    {
-        [Key]
-        public int Id { get; set; } // Primary Key
+    public int Id { get; set; }
 
-        [Required]
-        public int OrderId { get; set; } // Foreign Key for Order
+    public int OrderId { get; set; }
 
-        [ForeignKey("OrderId")]
-        public Order Order { get; set; } // Navigation Property
+    public int ProductId { get; set; }
 
-        [Required]
-        public int ProductId { get; set; } // Foreign Key for Product
+    public int Quantity { get; set; }
 
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; } // Navigation Property
+    public decimal Price { get; set; }
 
-        [Required]
-        public int Quantity { get; set; } // Quantity of the product
+    public virtual Order Order { get; set; } = null!;
 
-        [Required]
-        public decimal Price { get; set; } // Price of the product at the time of the order
-    }
+    public virtual Product Product { get; set; } = null!;
 }

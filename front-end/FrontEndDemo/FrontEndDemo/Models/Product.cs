@@ -1,37 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
-namespace MySQLDemo.Models
+namespace FrontEndDemo.Models;
+
+public partial class Product
 {
+    public int Id { get; set; }
 
-    public class Product
-    {
-        [Key]
-        public int Id { get; set; } // Primary Key
+    public string Name { get; set; } = null!;
 
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; } // Name of the product
+    public string Description { get; set; } = null!;
 
-        [Required]
-        [StringLength(500)]
-        public string Description { get; set; } // Description of the product
+    public decimal Price { get; set; }
 
-        [Required]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than zero.")]
-        public decimal Price { get; set; } // Price of the product
+    public int Stock { get; set; }
 
-        [Required]
-        public int Stock { get; set; } // Available stock count
+    public string Category { get; set; } = null!;
 
-        [Required]
-        public string Category { get; set; } // Product category
+    public DateTime CreatedAt { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Date the product was created
+    public DateTime? UpdatedAt { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? UpdatedAt { get; set; } // Date the product was last updated
+    public int CategoryId { get; set; }
 
-        public int CategoryId { get; set; } // Foreign Key
-    }
+    public virtual Category CategoryNavigation { get; set; } = null!;
+
+    public virtual ICollection<Orderitem> Orderitems { get; set; } = new List<Orderitem>();
 }

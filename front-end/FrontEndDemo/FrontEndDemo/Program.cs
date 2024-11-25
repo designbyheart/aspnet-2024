@@ -1,4 +1,8 @@
+using FrontEndDemo;
+
 var builder = WebApplication.CreateBuilder(args);
+Startup startup = new Startup(builder.Configuration);
+startup.ConfigureServices(builder.Services);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
